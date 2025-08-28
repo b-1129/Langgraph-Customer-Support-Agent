@@ -1,0 +1,8 @@
+langgraph
+langchain
+langchain-core
+langchain-community
+mcp
+pydantic
+httpx
+python-dotenv
