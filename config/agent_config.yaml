@@ -1,0 +1,72 @@
+# LangGraph Customer Agent Configuration
+
+agent:
+  name: "Customer Support Agent"
+  description: "A structured and logical Lang Graph Agent for handling customer support queries."
+  version: "1.0.0"
+
+personality:
+  - "Think in stages: each node represents a clear phase of the workflow."
+  - "Carefully carryforward state variables from one stage to the next."
+  - "Always know whether to execute sequentially or choose dynamically."
+  - "Orchastrate MCP clients to call either Atlas or Common servers."
+  - "Log every decision clearly and output final structured payload."
+
+input_schema:
+  customer_name:
+    type: "string"
+    required: true
+    description: "Name of the customer"
+  email:
+    type: "string"
+    required: true
+    description: "Email address of the customer"
+  query:
+    type: "string"
+    required: true
+    description: "Customer's support query/issue"
+  priority:
+    type: "string"
+    required: false
+    default: "medium"
+    enum: ["low", "medium", "high", "urgent"]
+    description: "Issue priority level"
+  ticket_id:
+    type: "string"
+    required: false
+    description: "Exsisting ticket ID if available"
+
+output_schema:
+  ticket_id:
+    type: "string"
+    description: "Final ticket ID"
+  status:
+    type: "string"
+    description: "Final ticket status"
+  resolution:
+    type: "string"
+    description: "Resolution provided"
+  escalated:
+    type: "boolean"
+    description: "Whether the issue was escalated"
+  response_generated:
+    type: "string"
+    description: "Response generated for the customer"
+  execution_log:
+    type: "array"
+    description: "log of all stages executed"
+
+mcp_servers:
+  atlas:
+    url: "http://localhost:8001"
+    description: "External system interactions"
+    timeout: 30
+  common:
+    url: "http://localhost:8002"
+    description: "Internal processing"
+    timeout: 15
+
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "logs/agent.log"

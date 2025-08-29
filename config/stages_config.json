@@ -1,0 +1,212 @@
+{
+    "stages": [
+        {
+            "id": 1,
+            "name": "INTAKE",
+            "description": "Accept and validate incoming payload",
+            "mode": "payload_only",
+            "abilities": ["accept_payload"],
+            "server": null,
+            "next_stage": "UNDERSTAND",
+            "required_state": ["customer_name", "email", "query"]
+        },
+        {
+            "id": 2,
+            "name": "UNDERSTAND",
+            "description": "Parse and extract entities from requests",
+            "mode": "deterministic",
+            "abilities":[
+                {
+                    "name": "parse_request_text",
+                    "server": "COMMON",
+                    "description": "Convert unstructured request into strucutred data"
+                },
+                {
+                    "name": "extract_entities",
+                    "server": "ATLAS",
+                    "description": "Identify product, account, dates"
+                }
+            ],
+            "next_stage": "PREPARE",
+            "execution_order": ["parse_request_text", "extract_entities"]
+        },
+        {
+            "id": 3,
+            "name": "PREPARE",
+            "description": "Normalize and enrich data",
+            "mode": "deterministic",
+            "abilities": [
+                {
+                    "name": "normalize_fields",
+                    "server": "COMMON",
+                    "description": "Standardize dates, codes, IDs"
+                },
+                {
+                    "name": "enrich_records",
+                    "server": "ATLAS",
+                    "description": "Add SLA, historical ticket info"
+                },
+                {
+                    "name": "add_flags_calculations",
+                    "server": "COMMON",
+                    "description": "Compute priority, SLA risk"
+                }
+            ],
+            "next_stage": "ASK",
+            "execution_order": ["normalize_fields", "enrich_records", "add_flags_calculations"]
+        },
+        {
+            "id": 4,
+            "name": "ASK",
+            "description": "Request missing information from human",
+            "mode": "human_in_the_loop",
+            "abilities": [
+                {
+                    "name": "clarify_question",
+                    "server": "ATLAS",
+                    "description": "Request missing information"
+                }
+            ],
+            "next_stage": "WAIT",
+            "requires_human": true
+        },
+        {
+            "id": 5,
+            "name": "WAIT",
+            "description": "Wait for and capture human response",
+            "mode": "deterministic",
+            "abilities": [
+                {
+                    "name": "extract_answer",
+                    "server": "ATLAS",
+                    "description": "Capture concise response"
+                },
+                {
+                    "name": "store_answer",
+                    "server": "state",
+                    "description": "Update payload with response"
+                }
+            ],
+            "next_stage": "RETRIEVE",
+            "execution_order": ["extract_answer", "store_answer"]
+        },
+        {
+            "id": 6,
+            "name": "RETRIEVE",
+            "description": "Search knowledge base for relevant solutions",
+            "mode": "deterministic",
+            "abilities": [
+                {
+                    "name": "knowledge_base_search",
+                    "server": "ATLAS",
+                    "description": "Look up KB or FAQ"
+                },
+                {
+                    "name": "store_data",
+                    "server": "state",
+                    "description": "Attach retrieve info to payload"
+                }
+            ],
+            "next_stage": "DECIDE",
+            "execution_order": ["knowledge_base_search", "store_data"]
+        },
+        {
+            "id": 7,
+            "name": "DECIDE",
+            "description": "Evaluate solutions and make escalation decisions",
+            "mode": "non_deterministic",
+            "abilities": [
+                {
+                    "name": "solution_evaluation",
+                    "server": "COMMON",
+                    "description": "Score potential solutions 1-100"
+                },
+                {
+                    "name": "escalation_decision",
+                    "server": "ATLAS",
+                    "description": "Assign to human agent if score <90"
+                },
+                {
+                    "name": "update_payload",
+                    "server": "state",
+                    "description": "Record decision outcomes"
+                }
+            ],
+            "next_stage": "UPDATE",
+            "decision_logic": {
+                "escalation_threshold": 90,
+                "evaluation_criteria": ["solution_quality", "customer_satisfaction_risk", "complexity"]
+            }
+        },
+        {
+            "id": 8,
+            "name": "UPDATE",
+            "description": "Update ticket system",
+            "mode": "deterministic",
+            "abilities": [
+                {
+                    "name": "update_ticket",
+                    "server": "ATLAS",
+                    "description": "Modify status, fields, priority"
+                },
+                {
+                    "name": "close_ticket",
+                    "server": "ATLAS",
+                    "description": "Mark issue resolved"
+                }
+            ],
+            "next_stage": "CREATE",
+            "execution_order": ["update_ticket", "close_ticket"]
+        },
+        {
+            "id": 9,
+            "name": "CREATE",
+            "description": "Generate customer response",
+            "mode": "deterministic",
+            "abilities": [
+                {
+                    "name": "response_generation",
+                    "server": "COMMON",
+                    "decription": "Draft customer reply"
+                }
+            ],
+            "next_stage": "DO"
+        },
+        {
+            "id": 10,
+            "name": "DO",
+            "description": "Execute actions and notifications",
+            "mode": "deterministic",
+            "abilities": [
+                {
+                    "name": "execute_api_calls",
+                    "server": "ATLAS",
+                    "description": "Trigger CRM/order system actions"
+                },
+                {
+                    "name": "trigger_notifications",
+                    "server": "ATLAS",
+                    "description": "Notify customer"
+                }
+            ],
+            "next_stage": "COMPLETE",
+            "execution_order": ["execute_api_calls", "trigger_notifications"]
+        },
+        {
+            "id": 11,
+            "name": "COMPLETE",
+            "description": "Output final structured payload",
+            "mode": "payload_only",
+            "abilities": ["output_payload"],
+            "server": null,
+            "next_stage": null,
+            "is_final": true
+        }
+    ],
+    "routing_rules": {
+        "deterministic": "Execute abilities in defined order",
+        "non_deterministic": "Evaluate context and choose abilities dynamically",
+        "human_interaction": "Pause for human input",
+        "payload_only": "Process state without external calls"
+    }
+}
