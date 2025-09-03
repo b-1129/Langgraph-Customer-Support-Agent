@@ -123,6 +123,7 @@ class IntakeStage:
                 pass  # If we can't even create basic state, just continue with the error
             
             logger.error(f"{self.stage_name} failed: {str(e)}")
+            raise
 
     def _validate_payload(self, payload: Dict[str, Any]) -> list[str]:
         """
