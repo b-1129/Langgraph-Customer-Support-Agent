@@ -185,7 +185,7 @@ class PrepareStage:
             session_id=state["session_id"]
         )
 
-        if not response.sucess:
+        if not response.success:
             raise Exception(f"failed to enrich records: {response.error}")
         
         return response.data
@@ -219,7 +219,7 @@ class PrepareStage:
             session_id=state["session_id"]
         )
 
-        if not response.sucess:
+        if not response.success:
             raise Exception(f"Failed to add flags and calculations: {response.error}")
         
         return response.data

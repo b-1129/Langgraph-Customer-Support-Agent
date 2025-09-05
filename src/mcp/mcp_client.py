@@ -34,7 +34,7 @@ class MCPRequest(BaseModel):
 
 class MCPResponse(BaseModel):
     """Standardized response format from MCP servers"""
-    sucess: bool
+    success: bool
     data: Optional[Dict[str, Any]] = None
     error: Optional[str] = None
     execution_time_ms: Optional[int] = None
