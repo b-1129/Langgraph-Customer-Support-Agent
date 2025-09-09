@@ -1,0 +1,14 @@
+{
+  "customer_name": "Brijesh Kapadiya",
+  "email": "brijesh.kapadiya@example.com",
+  "query": "Hi, I'm having trouble with my premium subscription. My payment failed yesterday and now I can't access my account. This is urgent as I need it for work. My account ID is ACC-12345. The error message says 'Payment method declined' but I know my card has sufficient funds. Can you please help me resolve this immediately?",
+  "priority": "high",
+  "ticket_id": null,
+  "additional_context": {
+    "customer_tier": "premium",
+    "previous_tickets": 2,
+    "last_login": "2024-01-14T15:30:00Z",
+    "subscription_type": "Pro Plan",
+    "payment_method": "**** 4567"
+  }
+}
