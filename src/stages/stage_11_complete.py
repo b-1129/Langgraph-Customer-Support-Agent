@@ -10,7 +10,7 @@ It's a PAYLOAD_ONLY stage - no external server calls.
 from typing import Dict, Any
 from datetime import datetime
 import logging
-from agent.state_manager import AgentState, StateManager, StageStatus
+from ..agent.state_manager import AgentState, StateManager, StageStatus
 
 logger = logging.getLogger(__name__)
 
@@ -78,7 +78,7 @@ class CompleteStage:
                 status=StageStatus.COMPLETED,
                 abilities_executed=abilities_executed,
                 server_used=None,  # No external server used
-                duration_ms=execution_time,
+                duration_ms=int(execution_time),
                 output=results
             )
             

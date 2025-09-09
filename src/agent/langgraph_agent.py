@@ -15,23 +15,22 @@ import logging
 from pathlib import Path
 
 from langgraph.graph import StateGraph, END
-from langgraph.graph import Graph
 
-from state_manager import AgentState, StateManager, StageStatus, state_manager
-from mcp.mcp_client import MCPClient, mcp_client
+from .state_manager import AgentState, StateManager, StageStatus, state_manager
+from ..mcp.mcp_client import MCPClient, mcp_client
 
 # Import all stage implementations
-from stages.stage_01_intake import IntakeStage
-from stages.stage_02_understand import UnderstandStage
-from stages.stage_03_prepare import PrepareStage
-from stages.stage_04_ask import AskStage
-from stages.stage_05_wait import WaitStage
-from stages.stage_06_retrieve import RetrieveStage
-from stages.stage_07_decide import DecideStage
-from stages.stage_08_update import UpdateStage
-from stages.stage_09_create import CreateStage
-from stages.stage_10_do import DoStage
-from stages.stage_11_complete import CompleteStage
+from ..stages.stage_01_intake import IntakeStage
+from ..stages.stage_02_understand import UnderstandStage
+from ..stages.stage_03_prepare import PrepareStage
+from ..stages.stage_04_ask import AskStage
+from ..stages.stage_05_wait import WaitStage
+from ..stages.stage_06_retrieve import RetrieveStage
+from ..stages.stage_07_decide import DecideStage
+from ..stages.stage_08_update import UpdateStage
+from ..stages.stage_09_create import CreateStage
+from ..stages.stage_10_do import DoStage
+from ..stages.stage_11_complete import CompleteStage
 
 logger = logging.getLogger(__name__)
 
@@ -86,6 +85,7 @@ class LangGraphCustomerSupportAgent:
         stages["ASK"] = AskStage(self.state_manager, self.mcp_client)
         stages["WAIT"] = WaitStage(self.state_manager, self.mcp_client)
         stages["RETRIEVE"] = RetrieveStage(self.state_manager, self.mcp_client)
+        stages["DECIDE"] = DecideStage(self.state_manager, self.mcp_client)
         stages["UPDATE"] = UpdateStage(self.state_manager, self.mcp_client)
         stages["CREATE"] = CreateStage(self.state_manager, self.mcp_client)
         stages["DO"] = DoStage(self.state_manager, self.mcp_client)

@@ -9,8 +9,8 @@ It's a DETERMINISTIC stage - abilities executes in a fixed sequence.
 from typing import Dict, Any
 from datetime import datetime
 import logging
-from agent.state_manager import AgentState, StateManager, StageStatus
-from mcp.mcp_client import MCPClient
+from ..agent.state_manager import AgentState, StateManager, StageStatus
+from ..mcp.mcp_client import MCPClient
 
 logger = logging.getLogger(__name__)
 

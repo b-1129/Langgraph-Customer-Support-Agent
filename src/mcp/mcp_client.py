@@ -105,7 +105,7 @@ class MCPClient:
         server_type  = self.server_mapping.get(ability_name)
         if not server_type:
             return MCPResponse(
-                sucess=False,
+                success=False,
                 error=f"Unknown ability: {ability_name}",
                 server_type= None
             )
@@ -160,7 +160,7 @@ class MCPClient:
             logger.error(f"Atlas server error for {request.ability_name} : {str(e)}")
 
             return MCPResponse(
-                sucess=False,
+                success=False,
                 error=str(e),
                 server_type=MCPServerType.ATLAS,
                 execution_time_ms=execution_time 
@@ -188,7 +188,7 @@ class MCPClient:
             execution_time = int((datetime.now() - start_time).total_seconds() * 1000)
 
             return MCPResponse(
-                sucess=True,
+                success=True,
                 data = response_data,
                 server_type=MCPServerType.COMMON,
                 execution_time_ms=execution_time

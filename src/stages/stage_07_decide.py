@@ -163,10 +163,10 @@ class DecideStage:
         # Prepare context with all relevant information
         context = {
             "retrieved_solutions": state.get("retrieved_solutions", []),
-            "customer_tier": state.get("enriched_records", {}).get("customer_tier", "standard"),
+            "customer_tier": (state.get("enriched_records") or {}).get("customer_tier", "standard"),
             "priority": state["priority"],
             "extracted_entities": state.get("extracted_entities", {}),
-            "customer_history": state.get("enriched_records", {})
+            "customer_history": state.get(("enriched_records") or {})
         }
         
         # Call COMMON server for solution evaluation

@@ -4,7 +4,7 @@ LangGraph Customer Support Agent - Main Execution
 This is the main entry point for running the customer support agent.
 It demonstrates the complete workflow with sample data and detailed logging.
 """
-
+import os
 import asyncio
 import json
 import logging
@@ -24,12 +24,12 @@ def setup_logging():
         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
         handlers=[
             logging.StreamHandler(sys.stdout),
-            logging.FileHandler('logs/agent.log', mode='a')
+            logging.FileHandler('logs/agent.log', mode='a', encoding="utf-8")
         ]
     )
     
     # Create logs directory if it doesn't exist
-    Path("logs").mkdir(exist_ok=True)
+    os.makedirs("logs", exist_ok=True)
 
 async def run_demo():
     """
@@ -117,7 +117,7 @@ async def run_demo():
 
         # Save results to file
         output_file = f"examples/demo_output_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
-        Path("examples").mkdir(exist_ok=True)
+        os.makedirs("examples", exist_ok=True)
         
         with open(output_file, 'w') as f:
             json.dump(result, f, indent=2, default=str)

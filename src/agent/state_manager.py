@@ -244,7 +244,7 @@ class StateManager:
             status=status,
             abilities_executed=abilities_executed or [],
             server_used=server_used,
-            duration_ms=duration_ms,
+            duration_ms=int(duration_ms * 1000),
             error_message=error_message,
             output=output
         )
