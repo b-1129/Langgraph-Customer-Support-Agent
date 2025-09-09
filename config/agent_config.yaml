@@ -1,7 +1,7 @@
 # LangGraph Customer Agent Configuration
 
 agent:
-  name: "Customer Support Agent"
+  name: "Clara - Clear Answers, Caring Support"
   description: "A structured and logical Lang Graph Agent for handling customer support queries."
   version: "1.0.0"
 
