@@ -16,6 +16,7 @@ Clara is a structured and logical LangGraph Agent that:
 *11-Stage Workflow Pipeline*
 
 INTAKE → UNDERSTAND → PREPARE → ASK → WAIT → RETRIEVE → DECIDE → UPDATE → CREATE → DO → COMPLETE
+
   📥        🧠         🛠️      ❓     ⏳       📚       ⚖️       🔄       ✍️      🏃      ✅
 
 *Stage Types*
